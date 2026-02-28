@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>String Generator with List & Range</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      width: 500px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .input-box {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      min-height: 60px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: #74ebd5;
+      outline: none;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin: 5px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f4f4f4;
+      text-align: left;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .copy-status {
+      margin-top: 8px;
+      font-size: 13px;
+      color: green;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>String Generator with List & Range</h2>
+
+    <div class="input-box">
+      <label>Enter list (comma separated, multi-line allowed):</label>
+      <textarea id="listInput" placeholder="e.g. Cat, dog, animal, movies"></textarea>
+    </div>
+
+    <div class="input-box">
+      <label>Enter integer range (e.g. 35 to 38):</label>
+      <input type="text" id="rangeInput" placeholder="e.g. 35 to 38">
+    </div>
+
+    <div class="input-box">
+      <label>Enter string with placeholders (use '{s}' for list and '{i}' for int):</label>
+      <textarea id="stringInput" placeholder="e.g. My pet is {s} and I am {i}"></textarea>
+    </div>
+
+    <button onclick="generateOutput()">Generate</button>
+    <button onclick="copyOutput()">Copy</button>
+
+    <div class="result" id="output"></div>
+    <div class="copy-status" id="copyStatus">✅ Copied to clipboard!</div>
+  </div>
+
+  <script>
+    function generateOutput() {
+      const listInput = document.getElementById("listInput").value.trim();
+      const rangeInput = document.getElementById("rangeInput").value.trim();
+      const stringInput = document.getElementById("stringInput").value.trim();
+      const outputDiv = document.getElementById("output");
+      const copyStatus = document.getElementById("copyStatus");
+
+      copyStatus.style.display = "none"; // reset status
+
+      if (!stringInput) {
+        outputDiv.textContent = "⚠️ Please enter a string template.";
+        return;
+      }
+
+      let result = "";
+
+      // Parse list
+      const items = listInput
+        ? listInput.split(/[\n,]+/).map(item => item.trim()).filter(item => item.length > 0)
+        : [];
+
+      // Parse range
+      let rangeNums = [];
+      if (rangeInput) {
+        const match = rangeInput.match(/(\d+)\s*to\s*(\d+)/i);
+        if (match) {
+          let start = parseInt(match[1], 10);
+          let end = parseInt(match[2], 10);
+          let step = start <= end ? 1 : -1;
+          for (let i = start; step > 0 ? i <= end : i >= end; i += step) {
+            rangeNums.push(i);
+          }
+        }
+      }
+
+      // Pairing logic
+      if (items.length && rangeNums.length && (stringInput.includes("{s}") || stringInput.includes("{i}"))) {
+        const maxLen = Math.max(items.length, rangeNums.length);
+        for (let idx = 0; idx < maxLen; idx++) {
+          const sVal = items[idx] || "";
+          const iVal = rangeNums[idx] !== undefined ? rangeNums[idx] : "";
+          result += stringInput.replace(/\{s\}/g, sVal).replace(/\{i\}/g, iVal) + "\n";
+        }
+      } else if (items.length && stringInput.includes("{s}")) {
+        items.forEach(s => {
+          result += stringInput.replace(/\{s\}/g, s) + "\n";
+        });
+      } else if (rangeNums.length && stringInput.includes("{i}")) {
+        rangeNums.forEach(i => {
+          result += stringInput.replace(/\{i\}/g, i) + "\n";
+        });
+      } else {
+        result = "⚠️ No output generated.";
+      }
+
+      outputDiv.textContent = result;
+    }
+
+    function copyOutput() {
+      const outputText = document.getElementById("output").textContent;
+      const copyStatus = document.getElementById("copyStatus");
+
+      if (!outputText || outputText.startsWith("⚠️")) {
+        copyStatus.textContent = "⚠️ Nothing valid to copy!";
+        copyStatus.style.color = "red";
+        copyStatus.style.display = "block";
+        return;
+      }
+
+      navigator.clipboard.writeText(outputText).then(() => {
+        copyStatus.textContent = "✅ Copied to clipboard!";
+        copyStatus.style.color = "green";
+        copyStatus.style.display = "block";
+      }).catch(err => {
+        copyStatus.textContent = "❌ Copy failed!";
+        copyStatus.style.color = "red";
+        copyStatus.style.display = "block";
+      });
+    }
+  </script>
+</body>
+</html>
