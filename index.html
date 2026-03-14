@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio - Android & Web Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">YourName</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="gradient-text">Hi, I'm <span>YourName</span></h1>
+            <p class="hero-subtitle">Android & Full-Stack Developer from Mumbai</p>
+            <button class="cta-btn">View Work</button>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>Self-taught developer passionate about building Android apps, web games, and integrating AI. Balancing code with fitness goals like 200+ push-ups and karate training.</p>
+    </section>
+
+    <section id="skills" class="skills">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card">Java</div>
+            <div class="skill-card">JavaScript</div>
+            <div class="skill-card">HTML/CSS</div>
+            <div class="skill-card">Android Studio</div>
+            <div class="skill-card">SQLite</div>
+            <div class="skill-card">APIs/AdMob</div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Android Fitness App</h3>
+                <p>SQLite-powered app for workout tracking with push-up/squat progress.</p>
+                <button class="modal-btn" data-modal="1">View Details</button>
+            </div>
+            <div class="project-card">
+                <h3>Web Game Tool</h3>
+                <p>HTML/JS game with Bluetooth integration.</p>
+                <button class="modal-btn" data-modal="2">View Details</button>
+            </div>
+            <div class="project-card">
+                <h3>APK Analyzer</h3>
+                <p>Reverse engineering tool for app monetization.</p>
+                <button class="modal-btn" data-modal="3">View Details</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact</h2>
+        <p>Mumbai, Maharashtra | Email: your.email@example.com | LinkedIn/GitHub</p>
+    </section>
+
+    <!-- Modals -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Android Fitness App</h3>
+            <p>Detailed description, GitHub link, APK download.</p>
+        </div>
+    </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Web Game Tool</h3>
+            <p>Detailed description, live demo link.</p>
+        </div>
+    </div>
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>APK Analyzer</h3>
+            <p>Detailed description, source code.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
